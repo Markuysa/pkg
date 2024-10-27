@@ -12,7 +12,7 @@ func LoadFromYAML(cfg any, path string) error {
 		return err
 	}
 
-	if err = yaml.Unmarshal(file, &cfg); err != nil {
+	if err = yaml.Unmarshal(file, cfg); err != nil {
 		return err
 	}
 
