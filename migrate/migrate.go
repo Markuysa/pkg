@@ -1,6 +1,12 @@
 package migrate
 
-import "embed"
+import (
+	"embed"
+
+	"github.com/golang-migrate/migrate/v4"
+	"github.com/golang-migrate/migrate/v4/source/iofs"
+	"github.com/pkg/errors"
+)
 
 func Migrate(
 	fs embed.FS,
