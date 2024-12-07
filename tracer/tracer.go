@@ -44,7 +44,7 @@ func NewTracer(cfg Config) (*Tracer, func() error, error) {
 	return &Tracer{tracer: conf}, closer.Close, nil
 }
 
-func (t *Tracer) NewSpan(ctx context.Context) (context.Context, opentracing.Span) {
+func NewSpan(ctx context.Context) (context.Context, opentracing.Span) {
 	pc, _, _, _ := runtime.Caller(1)
 	fn := runtime.FuncForPC(pc)
 
@@ -55,12 +55,12 @@ func (t *Tracer) NewSpan(ctx context.Context) (context.Context, opentracing.Span
 	return ctx, span
 }
 
-func (t *Tracer) SetSpanTags(span opentracing.Span, tags map[string]string) {
+func SetSpanTags(span opentracing.Span, tags map[string]string) {
 	for key, value := range tags {
 		span.SetTag(key, value)
 	}
 }
 
-func (t *Tracer) LogSpan(span opentracing.Span, message string) {
+func LogSpan(span opentracing.Span, message string) {
 	span.LogFields(log.String("event", message))
 }
