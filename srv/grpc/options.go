@@ -3,19 +3,25 @@ package grpc
 import (
 	"fmt"
 	"time"
+
+	"google.golang.org/grpc"
 )
 
-type regFuncs []func()
+type registerer interface {
+	RegisterServer(server *grpc.Server)
+}
 
-func (r regFuncs) apply() {
-	for _, f := range r {
-		f()
+type regs []registerer
+
+func (r regs) apply(server *grpc.Server) {
+	for _, reg := range r {
+		reg.RegisterServer(server)
 	}
 }
 
 type opts struct {
-	config   *Config
-	regFuncs regFuncs
+	config *Config
+	regs   regs
 }
 
 func (o opts) Validate() error {
@@ -31,14 +37,14 @@ type option interface {
 }
 
 type funcOption struct {
-	f []func()
+	f []registerer
 }
 
 func (fo *funcOption) apply(o *opts) {
-	o.regFuncs = fo.f
+	o.regs = fo.f
 }
 
-func WithRegisterFuncs(f ...func()) option {
+func WithRegistes(f ...registerer) option {
 	return &funcOption{f: f}
 }
 

@@ -47,8 +47,8 @@ func NewServer(opts ...option) (*grpc.Server, error) {
 
 	reflection.Register(srv)
 
-	if opt.regFuncs != nil {
-		opt.regFuncs.apply()
+	if opt.regs != nil {
+		opt.regs.apply(srv)
 	}
 
 	return srv, nil
