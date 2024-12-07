@@ -7,7 +7,7 @@ import (
 
 var Logger = zap.NewNop()
 
-func InitLogger(cfg *Config) error {
+func InitLogger(cfg Config) error {
 	level, err := zapcore.ParseLevel(cfg.Level)
 	if err != nil {
 		return err
