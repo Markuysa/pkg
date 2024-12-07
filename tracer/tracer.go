@@ -44,7 +44,7 @@ func NewTracer(cfg Config) (*Tracer, func() error, error) {
 	return &Tracer{tracer: conf}, closer.Close, nil
 }
 
-func NewSpan(ctx context.Context) (context.Context, opentracing.Span) {
+func NewSpan(ctx context.Context) (context.Context, opentracing.Span, string) {
 	pc, _, _, _ := runtime.Caller(1)
 	fn := runtime.FuncForPC(pc)
 
@@ -52,7 +52,7 @@ func NewSpan(ctx context.Context) (context.Context, opentracing.Span) {
 
 	span, ctx := opentracing.StartSpanFromContext(ctx, operationName)
 
-	return ctx, span
+	return ctx, span, operationName
 }
 
 func SetSpanTags(span opentracing.Span, tags map[string]string) {
