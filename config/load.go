@@ -3,6 +3,8 @@ package config
 import (
 	"os"
 
+	"github.com/creasty/defaults"
+	"github.com/go-playground/validator"
 	"gopkg.in/yaml.v2"
 )
 
@@ -14,6 +16,16 @@ func LoadFromYAML(cfg any, path string) error {
 	}
 
 	if err = yaml.Unmarshal(file, cfg); err != nil {
+		return err
+	}
+
+	err = defaults.Set(cfg)
+	if err != nil {
+		return err
+	}
+
+	err = validator.New().Struct(cfg)
+	if err != nil {
 		return err
 	}
 
