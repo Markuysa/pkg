@@ -1,6 +1,9 @@
 package grpc
 
 import (
+	"log"
+	"net"
+
 	"github.com/Markuysa/pkg/middleware"
 	mw "github.com/grpc-ecosystem/go-grpc-middleware/providers/prometheus"
 	"github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/recovery"
@@ -50,6 +53,17 @@ func NewServer(opts ...option) (*grpc.Server, error) {
 	if opt.regs != nil {
 		opt.regs.apply(srv)
 	}
+
+	listener, err := net.Listen("tcp", opt.config.Host)
+	if err != nil {
+		return nil, err
+	}
+
+	go func() {
+		if err = srv.Serve(listener); err != nil {
+			log.Fatalf("failed to serve grpc: %v", err)
+		}
+	}()
 
 	return srv, nil
 }
