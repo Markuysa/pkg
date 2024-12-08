@@ -48,11 +48,11 @@ func NewServer(opts ...option) (*grpc.Server, error) {
 
 	grpcMetrics.InitializeMetrics(srv)
 
-	reflection.Register(srv)
-
 	if opt.regs != nil {
 		opt.regs.apply(srv)
 	}
+
+	reflection.Register(srv)
 
 	listener, err := net.Listen("tcp", opt.config.Host)
 	if err != nil {
