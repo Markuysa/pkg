@@ -28,7 +28,7 @@ func NewServer(opts ...option) (*grpc.Server, error) {
 	grpcMetrics := mw.NewServerMetrics()
 
 	unaryInterceptor := grpc.ChainUnaryInterceptor(
-		middleware.AccessLogMiddleware(),
+		middleware.UnaryServerInterceptor(),
 		recovery.UnaryServerInterceptor(),
 		grpcMetrics.UnaryServerInterceptor(),
 	)
