@@ -8,9 +8,9 @@ import (
 
 type (
 	Error struct {
-		msg string
-		// Unique error code.
-		code ErrorCode
+		Msg string `json:"msg"`
+		// Unique error Code.
+		Code ErrorCode `json:"code"`
 	}
 	ErrorCode codes.Code
 )
@@ -19,8 +19,8 @@ var _ error = (*Error)(nil)
 
 func New(msg string, code ErrorCode) *Error {
 	return &Error{
-		msg:  msg,
-		code: code,
+		Msg:  msg,
+		Code: code,
 	}
 }
 
@@ -30,10 +30,10 @@ func (e *Error) Error() string {
 	return string(res)
 }
 
-func (e *Error) Code() ErrorCode {
-	return e.code
+func (e *Error) GetCode() ErrorCode {
+	return e.Code
 }
 
 func (e *Error) Message() string {
-	return e.msg
+	return e.Msg
 }
