@@ -7,11 +7,12 @@ import (
 	"github.com/Markuysa/pkg/log"
 	"github.com/golang-migrate/migrate/v4"
 	"github.com/golang-migrate/migrate/v4/source/iofs"
+	_ "github.com/lib/pq"
 	"github.com/pkg/errors"
 )
 
 type MigrateCfg struct {
-	MigratePath string
+	MigratePath string `default:"."`
 	Fs          embed.FS
 	PgDSN       string
 }
