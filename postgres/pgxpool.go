@@ -11,18 +11,18 @@ import (
 type (
 	PgxPoolCfg struct {
 		Host     string
-		Port     int
-		User     string
-		Password string
-		Database string
-		SSLMode  string
-		Timeout  time.Duration
+		Port     int           `default:"5432"`
+		User     string        `default:"postgres"`
+		Password string        `default:"postgres"`
+		Database string        `default:"postgres"`
+		SSLMode  string        `default:"disable"`
+		Timeout  time.Duration `default:"5s"`
 		Extra    Extra
 		Migrate  *MigrateCfg
 	}
 	Extra struct {
-		MaxOpenConnections int32
-		MinOpenConnections int32
+		MaxOpenConnections int32 `default:"10"`
+		MinOpenConnections int32 `default:"1"`
 	}
 )
 
