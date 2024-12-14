@@ -56,6 +56,8 @@ func New(
 	}
 
 	if opt.migrate != nil {
+		opt.migrate.PgDSN = dsn
+
 		err = applyMigrations(opt.migrate)
 		if err != nil {
 			return nil, fmt.Errorf("failed to launch migrate: %v", err)
