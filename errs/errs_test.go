@@ -30,7 +30,7 @@ func TestError_Code(t *testing.T) {
 				Msg:  tt.fields.msg,
 				Code: tt.fields.code,
 			}
-			if got := e.GetCode(); got != tt.want {
+			if got := e.Code; got != tt.want {
 				t.Errorf("Code() = %v, want %v", got, tt.want)
 			}
 		})
@@ -94,7 +94,7 @@ func TestError_Message(t *testing.T) {
 				Msg:  tt.fields.msg,
 				Code: tt.fields.code,
 			}
-			if got := e.Message(); got != tt.want {
+			if got := e.Msg; got != tt.want {
 				t.Errorf("Message() = %v, want %v", got, tt.want)
 			}
 		})
@@ -114,8 +114,9 @@ func TestNew(t *testing.T) {
 		{
 			name: "Test Error",
 			args: args{
-				msg:  "Test Error",
-				code: 2,
+				msg:   "Test Error",
+				code:  2,
+				index: 10_0000,
 			},
 			want: &Error{
 				Msg:  "Test Error",
@@ -125,7 +126,7 @@ func TestNew(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := New(tt.args.msg, tt.args.code); !reflect.DeepEqual(got, tt.want) {
+			if got := New(tt.args.msg, tt.args.code, tt.args.index); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("New() = %v, want %v", got, tt.want)
 			}
 		})
