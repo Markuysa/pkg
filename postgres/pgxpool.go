@@ -18,6 +18,7 @@ type (
 		SSLMode  string
 		Timeout  time.Duration
 		Extra    Extra
+		Migrate  *MigrateCfg
 	}
 	Extra struct {
 		MaxOpenConnections int32
@@ -25,7 +26,15 @@ type (
 	}
 )
 
-func New(c PgxPoolCfg) (*pgxpool.Pool, error) {
+func New(
+	c PgxPoolCfg,
+	opts ...option,
+) (*pgxpool.Pool, error) {
+	opt := &options{}
+	for _, o := range opts {
+		o.apply(opt)
+	}
+
 	dsn := fmt.Sprintf("postgres://%s:%s@%s:%d/%s?sslmode=%s",
 		c.User, c.Password, c.Host, c.Port, c.Database, c.SSLMode)
 
@@ -44,6 +53,13 @@ func New(c PgxPoolCfg) (*pgxpool.Pool, error) {
 
 	if err = pool.Ping(context.Background()); err != nil {
 		return nil, fmt.Errorf("failed to ping: %v", err)
+	}
+
+	if opt.migrate != nil {
+		err = applyMigrations(opt.migrate)
+		if err != nil {
+			return nil, fmt.Errorf("failed to launch migrate: %v", err)
+		}
 	}
 
 	return pool, err

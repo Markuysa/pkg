@@ -1,4 +1,4 @@
-package logger
+package log
 
 import (
 	"go.uber.org/zap"
@@ -20,7 +20,7 @@ func InitLogger(cfg Config) error {
 		EncoderConfig: zapcore.EncoderConfig{
 			TimeKey:        "time",
 			LevelKey:       "level",
-			NameKey:        "logger",
+			NameKey:        "log",
 			CallerKey:      "caller",
 			MessageKey:     "msg",
 			StacktraceKey:  "stacktrace",
@@ -40,4 +40,32 @@ func InitLogger(cfg Config) error {
 	}
 
 	return err
+}
+
+func Info(msg string, fields ...zap.Field) {
+	Logger.Info(msg, fields...)
+}
+
+func Fatal(msg string, fields ...zap.Field) {
+	Logger.Fatal(msg, fields...)
+}
+
+func Fatalf(template string, args ...interface{}) {
+	Logger.Sugar().Fatalf(template, args...)
+}
+
+func Error(msg string, fields ...zap.Field) {
+	Logger.Error(msg, fields...)
+}
+
+func Errorf(template string, args ...interface{}) {
+	Logger.Sugar().Errorf(template, args...)
+}
+
+func Warn(msg string, fields ...zap.Field) {
+	Logger.Warn(msg, fields...)
+}
+
+func Infof(template string, args ...interface{}) {
+	Logger.Sugar().Infof(template, args...)
 }

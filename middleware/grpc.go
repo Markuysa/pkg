@@ -4,7 +4,7 @@ import (
 	"context"
 	"time"
 
-	"github.com/Markuysa/pkg/logger"
+	"github.com/Markuysa/pkg/log"
 	"go.uber.org/zap"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/status"
@@ -22,7 +22,7 @@ func UnaryServerInterceptor() grpc.UnaryServerInterceptor {
 		duration := time.Since(start)
 
 		st, _ := status.FromError(err)
-		logger.Logger.Info("gRPC request",
+		log.Logger.Info("gRPC request",
 			zap.String("method", info.FullMethod),
 			zap.Duration("duration", duration),
 			zap.Int("code", int(st.Code())),
