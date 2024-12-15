@@ -1,6 +1,9 @@
 package prober
 
-import "github.com/gofiber/fiber/v2"
+import (
+	"github.com/Markuysa/pkg/log"
+	"github.com/gofiber/fiber/v2"
+)
 
 func LaunchProbes(cfg Config) error {
 	app := fiber.New(
@@ -17,14 +20,11 @@ func LaunchProbes(cfg Config) error {
 		return c.SendString("Alive")
 	})
 
-	errChan := make(chan error, 1)
 	go func() {
 		if err := app.Listen(cfg.Address); err != nil {
-			errChan <- err
-		} else {
-			errChan <- nil
+			log.Fatalf("failed to start prober: %v", err)
 		}
 	}()
 
-	return <-errChan
+	return nil
 }

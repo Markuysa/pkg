@@ -3,6 +3,7 @@ package prometheus
 import (
 	"net/http"
 
+	"github.com/Markuysa/pkg/log"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
@@ -12,14 +13,11 @@ func LaunchPrometheusListener(cfg Config) error {
 
 	mux.Handle("/metrics", promhttp.HandlerFor(prometheus.DefaultGatherer, promhttp.HandlerOpts{}))
 
-	errChan := make(chan error, 1)
 	go func() {
 		if err := http.ListenAndServe(cfg.Address, mux); err != nil {
-			errChan <- err
-		} else {
-			errChan <- nil
+			log.Fatalf("failed to start prometheus listener: %v", err)
 		}
 	}()
 
-	return <-errChan
+	return nil
 }
