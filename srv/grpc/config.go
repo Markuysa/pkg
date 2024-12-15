@@ -3,7 +3,7 @@ package grpc
 import "time"
 
 type Config struct {
-	Host              string        `default:"0.0.0.0:9000" yaml:"host"`
+	Host              string        `default:"0.0.0.0:5000" yaml:"host"`
 	MaxConnectionIdle time.Duration `default:"5m" yaml:"max_connection_idle"`
 	MaxConnectionAge  time.Duration `default:"5m" yaml:"max_connection_age"`
 	Timeout           time.Duration `default:"5m" yaml:"timeout"`
