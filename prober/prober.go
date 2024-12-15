@@ -19,7 +19,11 @@ func LaunchProbes(cfg Config) error {
 
 	errChan := make(chan error, 1)
 	go func() {
-		errChan <- app.Listen(cfg.Address)
+		if err := app.Listen(cfg.Address); err != nil {
+			errChan <- err
+		} else {
+			errChan <- nil
+		}
 	}()
 
 	return <-errChan

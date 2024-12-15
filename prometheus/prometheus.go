@@ -12,9 +12,13 @@ func LaunchPrometheusListener(cfg Config) error {
 
 	mux.Handle("/metrics", promhttp.HandlerFor(prometheus.DefaultGatherer, promhttp.HandlerOpts{}))
 
-	errChan := make(chan error)
+	errChan := make(chan error, 1)
 	go func() {
-		errChan <- http.ListenAndServe(cfg.Address, mux)
+		if err := http.ListenAndServe(cfg.Address, mux); err != nil {
+			errChan <- err
+		} else {
+			errChan <- nil
+		}
 	}()
 
 	return <-errChan
