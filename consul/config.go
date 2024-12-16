@@ -11,7 +11,6 @@ type (
 		ExposePort int      `default:"8000" yaml:"expose_port"`
 		Address    string   `yaml:"address"`
 		Tags       []string `yaml:"tags"`
-		Namespace  string   `yaml:"namespace" default:"default"`
 		Probe      Probe    `yaml:"probe"`
 	}
 	Probe struct {

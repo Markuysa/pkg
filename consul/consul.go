@@ -10,7 +10,6 @@ func RegisterService(cfg Config) error {
 	config := consulapi.DefaultConfig()
 
 	config.Address = cfg.Address
-
 	consul, err := consulapi.NewClient(config)
 	if err != nil {
 		return err
@@ -33,8 +32,7 @@ func RegisterService(cfg Config) error {
 			Interval: cfg.ServiceExtra.Probe.Interval,
 			Timeout:  cfg.ServiceExtra.Probe.Timeout,
 		},
-		Tags:      cfg.ServiceExtra.Tags,
-		Namespace: cfg.ServiceExtra.Namespace,
+		Tags: cfg.ServiceExtra.Tags,
 	}
 
 	regiErr := consul.Agent().ServiceRegister(reg)
